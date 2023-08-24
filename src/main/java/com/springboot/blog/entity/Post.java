@@ -41,11 +41,6 @@ public class Post {
         private String description;
         private String content;
 
-        /*public PostBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }*/
-
         public PostBuilder title(String title) {
             this.title = title;
             return this;
