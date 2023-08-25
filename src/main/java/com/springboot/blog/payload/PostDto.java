@@ -9,7 +9,7 @@ public class PostDto {
     private String description;
     private String content;
 
-    PostDto(Long id, String title, String description, String content) {
+    public PostDto(Long id, String title, String description, String content) {
         this.id = id;
         this.title = title;
         this.description = description;
