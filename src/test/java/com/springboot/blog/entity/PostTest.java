@@ -46,8 +46,6 @@ class PostTest {
                 .content("content")
                 .build();
 
-        System.out.println("post2 = " + post2);
-
         assertEquals(this.post, post2);
     }
 
