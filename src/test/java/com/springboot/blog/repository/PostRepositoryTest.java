@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 
 import java.util.List;
@@ -38,7 +39,7 @@ class PostRepositoryTest {
                 .build();
         postRepository.save(post2);
 
-        Pageable pageable = PageRequest.of(0, 2);
+        Pageable pageable = PageRequest.of(0, 2, Sort.by("id"));
         List<Post> postOptional = postRepository.findAll(pageable).getContent();
 
         assertEquals(2, postOptional.size());

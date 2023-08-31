@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PostService {
 
-    PostResponse getAllPosts(int page, int size);
+    PostResponse getAllPosts(int page, int size, String sortBy);
 
     PostDto createPost(PostDto postDto);
 

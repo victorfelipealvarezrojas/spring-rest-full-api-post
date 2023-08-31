@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -23,9 +22,10 @@ public class PostController {
     @GetMapping()
     public ResponseEntity<PostResponse> getAllPost(
             @RequestParam(name = "page", defaultValue = "0" , required = false) int page,
-            @RequestParam(name = "size", defaultValue = "5", required = false) int size
+            @RequestParam(name = "size", defaultValue = "5", required = false) int size,
+            @RequestParam(name = "sortBy", defaultValue = "id", required = false) String sortBy
     ) {
-        return new ResponseEntity<>(postService.getAllPosts(page, size), OK);
+        return new ResponseEntity<>(postService.getAllPosts(page, size, sortBy), OK);
     }
 
     @GetMapping("/{id}")
