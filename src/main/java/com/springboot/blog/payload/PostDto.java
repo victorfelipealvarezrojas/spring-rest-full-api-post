@@ -26,6 +26,9 @@ public class PostDto {
         private String description;
         private String content;
 
+        public PostDtoBuilder() {
+        }
+
         public PostDtoBuilder id(Long id) {
             this.id = id;
             return this;

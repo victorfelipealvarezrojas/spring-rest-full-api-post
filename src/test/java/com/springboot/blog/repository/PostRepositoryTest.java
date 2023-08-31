@@ -4,10 +4,14 @@ import com.springboot.blog.entity.Post;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -16,6 +20,29 @@ class PostRepositoryTest {
 
     @Autowired
     PostRepository postRepository;
+
+    @Test
+    @Order(0)
+    void testFindAll() {
+        Post post = new Post.PostBuilder()
+                .title("title")
+                .description("description")
+                .content("content")
+                .build();
+        postRepository.save(post);
+
+        Post post2 = new Post.PostBuilder()
+                .title("title2")
+                .description("description2")
+                .content("content2")
+                .build();
+        postRepository.save(post2);
+
+        Pageable pageable = PageRequest.of(0, 2);
+        List<Post> postOptional = postRepository.findAll(pageable).getContent();
+
+        assertEquals(2, postOptional.size());
+    }
 
     @Test
     @Order(1)
@@ -55,7 +82,7 @@ class PostRepositoryTest {
         postRepository.save(post);
         Optional<Post> postOptional = postRepository.findById(post.getId());
         assertTrue(postOptional.isPresent());
-        assertTrue(postOptional.get().getTitle().equals("title2"));
+        assertEquals("title2", postOptional.get().getTitle());
     }
 
     @Test
