@@ -102,9 +102,9 @@ class PostControllerTest {
                 .last(true)
                 .build();
 
-        when(postService.getAllPosts(0, 1, "title")).thenReturn(contentPageResponse);
+        when(postService.getAllPosts(0, 1, "title","asc")).thenReturn(contentPageResponse);
 
-        mockMvc.perform(get("/api/posts?page=0&size=1&sortBy=title")
+        mockMvc.perform(get("/api/posts?page=0&size=1&sortBy=title&sortDir=asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].title").value("title-test-post-service"))

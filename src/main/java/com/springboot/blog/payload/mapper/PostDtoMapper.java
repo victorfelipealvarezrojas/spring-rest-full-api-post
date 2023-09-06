@@ -5,7 +5,7 @@ import com.springboot.blog.payload.PostDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DtoMapper {
+public class PostDtoMapper {
     public PostDto mapToDTO(Post post) {
         return new PostDto.PostDtoBuilder()
                 .id(post.getId())
