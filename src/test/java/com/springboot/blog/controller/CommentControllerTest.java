@@ -12,9 +12,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CommentController.class)
@@ -26,7 +29,7 @@ class CommentControllerTest {
     private CommentService commentService;
 
     Post postFake;
-    CommentDto commentFake;
+    CommentDto commentFake, commentFake2;
     ObjectMapper objectMapper;
 
     @BeforeEach
@@ -46,6 +49,12 @@ class CommentControllerTest {
                 .post(postFake)
                 .build();
 
+        commentFake2 = new CommentDto.CommentDtoBuilder()
+                .name("comment_name2")
+                .email("comment_email2")
+                .body("comment_body2")
+                .post(postFake)
+                .build();
     }
 
     @Test
@@ -64,6 +73,17 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.email").value(commentFake.getEmail()))
                 .andExpect(jsonPath("$.body").value(commentFake.getBody()))
                 .andExpect(jsonPath("$.post").value(commentFake.getPost()));
+    }
 
+    @Test
+    void getCommentsByPostId() throws Exception {
+        when(commentService.getCommentsByPostId(any(Long.class))).thenReturn(List.of(commentFake, commentFake2));
+
+        mockMvc.perform(get("/api/posts/1/comments")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect((status().isOk()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name").value(commentFake.getName()))
+                .andExpect(jsonPath("$[1].name").value(commentFake2.getName()));
     }
 }

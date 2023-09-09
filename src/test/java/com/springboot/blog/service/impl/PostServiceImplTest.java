@@ -41,5 +41,4 @@ class PostServiceImplTest {
 
         verify(postRepository,times(1)).save(any(Post.class));
     }
-
 }

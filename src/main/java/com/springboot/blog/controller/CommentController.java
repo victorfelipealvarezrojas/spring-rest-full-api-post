@@ -15,6 +15,19 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<?> getCommentsByPostId(@PathVariable(value = "postId") Long id) {
+        return new ResponseEntity<>(commentService.getCommentsByPostId(id), OK);
+    }
+
+    @GetMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<?> getCommentById(
+            @PathVariable(value = "postId") Long postId,
+            @PathVariable(value = "commentId") Long commentId
+    ) {
+        return new ResponseEntity<>(commentService.getCommentById(postId, commentId), OK);
+    }
+
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(
             @RequestBody CommentDto commentDto,
@@ -23,4 +36,20 @@ public class CommentController {
         return new ResponseEntity<>(commentService.createComment(id, commentDto), OK);
     }
 
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentDto> updateCommentById(
+            @PathVariable(value = "postId") Long postId,
+            @PathVariable(value = "commentId") Long commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        return new ResponseEntity<>(commentService.updateCommentById(postId, commentId, commentDto), OK);
+    }
+
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<?> deleteCommentById(
+            @PathVariable(value = "postId") Long postId,
+            @PathVariable(value = "commentId") Long commentId
+    ) {
+        return new ResponseEntity<>(commentService.deleteCommentById(postId, commentId), OK);
+    }
 }

@@ -23,6 +23,7 @@ class CommentRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        // SAVE REPOSITORY
         List<Comment> comentToList = getComments(getPost());
         commentToSet = commentRepository.saveAll(comentToList);
     }
@@ -79,6 +80,32 @@ class CommentRepositoryTest {
             assertEquals(c.getBody(), "content");
         });
     }
+
+    @Test
+    void CommentsByPostId() {
+        List<Comment> comments = commentRepository.findByPostId(commentToSet.get(0).getPost().getId());
+        assertEquals(comments.size(), 3);
+    }
+
+    @Test
+    void updateCommentById() {
+        Comment comment = commentRepository.findById(commentToSet.get(0).getId()).orElseThrow();
+
+        comment.setName("nameEdit");
+        commentRepository.save(comment);
+
+        Comment commentUpdated = commentRepository.findById(commentToSet.get(0).getId()).orElseThrow();
+        assertEquals(commentUpdated.getName(), "nameEdit");
+    }
+
+    @Test
+    void deleteRepository() {
+        assertEquals(commentRepository.findAll().size(), 3);
+        Comment comment = commentRepository.findById(commentToSet.get(0).getId()).orElseThrow();
+        commentRepository.delete(comment);
+        assertEquals(commentRepository.findAll().size(), 2);
+    }
+
 
     private static List<Comment> getComments(Post post) {
         return List.of(

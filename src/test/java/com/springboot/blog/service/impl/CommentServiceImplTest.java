@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +38,8 @@ class CommentServiceImplTest {
     CommentDtoMapper commentDtoMapper;
 
     Post postFake;
-    Comment commentFake;
+    Comment commentFake, commentFake2;
+    List<Comment> commentFakeList;
 
     @BeforeEach
     void setUp() {
@@ -52,6 +55,14 @@ class CommentServiceImplTest {
                 .body("comment_body")
                 .post(postFake)
                 .build();
+        commentFake2 = new Comment.CommentBuilder()
+                .name("comment_name")
+                .email("comment_email")
+                .body("comment_body")
+                .post(postFake)
+                .build();
+
+        commentFakeList = List.of(commentFake, commentFake2);
 
     }
 
@@ -69,5 +80,19 @@ class CommentServiceImplTest {
         assertEquals("title-test-post-repository", response.getPost().getTitle());
         assertEquals("description-test-post-repository", response.getPost().getDescription());
         assertEquals("content-test-post-repository", response.getPost().getContent());
+    }
+
+    @Test
+    void getCommentsByPostId() {
+        when(commentRepository.findByPostId(any(Long.class))).thenReturn(commentFakeList);
+
+        List<CommentDto> response = commentService.getCommentsByPostId(1L);
+
+        assertEquals("comment_name", response.get(0).getName());
+        assertEquals("comment_email", response.get(0).getEmail());
+        assertEquals("comment_body", response.get(0).getBody());
+        assertEquals(2, response.size());
+
+
     }
 }
