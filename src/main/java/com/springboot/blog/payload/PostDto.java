@@ -1,5 +1,7 @@
 package com.springboot.blog.payload;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -8,9 +10,19 @@ import java.util.Set;
 @Data
 public class PostDto {
     private Long id;
+
+    @NotEmpty(message = "Title cannot be empty")
+    @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
     private String title;
+
+    @NotEmpty(message = "Description cannot be empty")
+    @Size(min = 10, max = 50, message = "Description must be between 3 and 50 characters")
     private String description;
+
+    @NotEmpty(message = "Content cannot be empty")
+    @Size(min = 10, max = 500, message = "Content must be between 10 and 500 characters")
     private String content;
+
     private Set<CommentDto> comments = new HashSet<>();
 
     public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments) {
@@ -27,8 +39,17 @@ public class PostDto {
 
     public static class PostDtoBuilder {
         private Long id;
+
+        @NotEmpty(message = "Title cannot be empty")
+        @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
         private String title;
+
+        @NotEmpty(message = "Description cannot be empty")
+        @Size(min = 10, max = 50, message = "Description must be between 3 and 50 characters")
         private String description;
+
+        @NotEmpty(message = "Content cannot be empty")
+        @Size(min = 10, max = 500, message = "Content must be between 10 and 500 characters")
         private String content;
         private Set<CommentDto> comments;
 
@@ -40,17 +61,29 @@ public class PostDto {
             return this;
         }
 
-        public PostDtoBuilder title(String title) {
+        public PostDtoBuilder title(
+                @NotEmpty(message = "Title cannot be empty")
+                @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
+                String title
+        ) {
             this.title = title;
             return this;
         }
 
-        public PostDtoBuilder description(String description) {
+        public PostDtoBuilder description(
+                @NotEmpty(message = "Description cannot be empty")
+                @Size(min = 10, max = 50, message = "Description must be between 3 and 50 characters")
+                String description
+        ) {
             this.description = description;
             return this;
         }
 
-        public PostDtoBuilder content(String content) {
+        public PostDtoBuilder content(
+                @NotEmpty(message = "Content cannot be empty")
+                @Size(min = 10, max = 500, message = "Content must be between 10 and 500 characters")
+                String content
+        ) {
             this.content = content;
             return this;
         }
@@ -65,7 +98,11 @@ public class PostDto {
         }
 
         public String toString() {
-            return "PostDto.PostDtoBuilder(id=" + this.id + ", title=" + this.title + ", description=" + this.description + ", content=" + this.content + ", comments=" + this.comments + ")";
+            return "PostDto.PostDtoBuilder(id=" + this.id +
+                    ", title=" + this.title +
+                    ", description=" + this.description +
+                    ", content=" + this.content +
+                    ", comments=" + this.comments + ")";
         }
     }
 }

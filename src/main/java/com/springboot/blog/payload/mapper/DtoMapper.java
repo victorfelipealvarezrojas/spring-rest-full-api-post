@@ -6,21 +6,12 @@ import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.payload.PostDto;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class DtoMapper {
-    public PostDto mapToDTO(Post post) {
-        return new PostDto.PostDtoBuilder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .description(post.getDescription())
-                .content(post.getContent())
-                .comments(post.getComments().stream()
-                        .map(this::mapToDTO)
-                        .collect(Collectors.toSet()))
-                .build();
-    }
 
     public Post mapToEntity(PostDto postDto) {
         return new Post.PostBuilder()
@@ -28,6 +19,29 @@ public class DtoMapper {
                 .description(postDto.getDescription())
                 .content(postDto.getContent())
                 .build();
+    }
+
+    public PostDto mapToDTO(Post post) {
+        return new PostDto.PostDtoBuilder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .description(post.getDescription())
+                .content(post.getContent())
+                .comments(mapCommentsToDto(post.getComments()))
+                .build();
+    }
+
+
+    private Set<CommentDto> mapCommentsToDto(Set<Comment> comments) {
+        return comments != null
+                ? comments.stream().map(this::mapToDTO).collect(Collectors.toSet())
+                : null;
+    }
+
+    private Set<CommentDto> mapCommentsToDto2(Set<Comment> comments) {
+        return Optional.ofNullable(comments)
+                .map(commentSet -> commentSet.stream().map(this::mapToDTO).collect(Collectors.toSet()))
+                .orElse(null);
     }
 
     private CommentDto mapToDTO(Comment comment) {

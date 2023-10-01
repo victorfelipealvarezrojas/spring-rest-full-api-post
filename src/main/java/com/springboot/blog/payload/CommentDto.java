@@ -1,13 +1,26 @@
 package com.springboot.blog.payload;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class CommentDto {
     public long id;
+
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
+
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Email(message = "Email must be a valid email address")
     private String email;
+
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 20, max = 100, message = "Name must be between 20 and 100 characters")
     private String body;
 
     CommentDto(long id, String name, String email, String body) {
@@ -55,7 +68,10 @@ public class CommentDto {
         }
 
         public String toString() {
-            return "CommentDto.CommentDtoBuilder(id=" + this.id + ", name=" + this.name + ", email=" + this.email + ", body=" + this.body + ")";
+            return "CommentDto.CommentDtoBuilder(id=" + this.id +
+                    ", name=" + this.name +
+                    ", email=" + this.email +
+                    ", body=" + this.body + ")";
         }
     }
 }
