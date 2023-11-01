@@ -40,6 +40,10 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +69,7 @@ public class Post {
         private String description;
         private String content;
         private Set<Comment> comments;
+        private Category category;
 
         public PostBuilder() {
         }
@@ -94,12 +99,24 @@ public class Post {
             return this;
         }
 
+        public PostBuilder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
         public Post build() {
-            return new Post(this.id, this.title, this.description, this.content, this.comments);
+            return new Post(this.id, this.title, this.description,
+                    this.content, this.comments, this.category);
         }
 
         public String toString() {
-            return "Post.PostBuilder(id=" + this.id + ", title=" + this.title + ", description=" + this.description + ", content=" + this.content + ", comments=" + this.comments + ")";
+            return "Post.PostBuilder(" +
+                    "id=" + this.id +
+                    ", title=" + this.title +
+                    ", description=" + this.description +
+                    ", content=" + this.content +
+                    ", comments=" + this.comments +
+                    ")";
         }
     }
 }

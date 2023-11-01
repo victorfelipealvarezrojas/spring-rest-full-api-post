@@ -28,9 +28,9 @@ public class DtoMapper {
                 .description(post.getDescription())
                 .content(post.getContent())
                 .comments(mapCommentsToDto(post.getComments()))
+                .categoryId(post.getCategory().getId())
                 .build();
     }
-
 
     private Set<CommentDto> mapCommentsToDto(Set<Comment> comments) {
         return comments != null

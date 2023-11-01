@@ -25,12 +25,15 @@ public class PostDto {
 
     private Set<CommentDto> comments = new HashSet<>();
 
-    public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments) {
+    private Long categoryId;
+
+    public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments, Long categoryId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.content = content;
         this.comments = comments;
+        this.categoryId = categoryId;
     }
 
     public static PostDtoBuilder builder() {
@@ -52,6 +55,8 @@ public class PostDto {
         @Size(min = 10, max = 500, message = "Content must be between 10 and 500 characters")
         private String content;
         private Set<CommentDto> comments;
+
+        private Long categoryId;
 
         public PostDtoBuilder() {
         }
@@ -93,8 +98,20 @@ public class PostDto {
             return this;
         }
 
+        public PostDtoBuilder categoryId(Long categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
         public PostDto build() {
-            return new PostDto(this.id, this.title, this.description, this.content, this.comments);
+            return new PostDto(
+                    this.id,
+                    this.title,
+                    this.description,
+                    this.content,
+                    this.comments,
+                    this.categoryId
+            );
         }
 
         public String toString() {
@@ -102,7 +119,9 @@ public class PostDto {
                     ", title=" + this.title +
                     ", description=" + this.description +
                     ", content=" + this.content +
-                    ", comments=" + this.comments + ")";
+                    ", comments=" + this.comments +
+                    ", categoryId=" + this.categoryId +
+                    ")";
         }
     }
 }
