@@ -1,5 +1,6 @@
 package com.springboot.blog.payload;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -8,23 +9,52 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Schema(
+        name = "PostDto",
+        description = "PostDto Model Information"
+)
 public class PostDto {
     private Long id;
 
+    @Schema(
+            name = "title",
+            description = "Post Title",
+            example = "Post Title"
+    )
     @NotEmpty(message = "Title cannot be empty")
     @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
     private String title;
 
+    @Schema(
+            name = "description",
+            description = "Post Description",
+            example = "Post Description"
+    )
     @NotEmpty(message = "Description cannot be empty")
     @Size(min = 10, max = 50, message = "Description must be between 3 and 50 characters")
     private String description;
 
+    @Schema(
+            name = "content",
+            description = "Post Content",
+            example = "Post Content"
+    )
     @NotEmpty(message = "Content cannot be empty")
     @Size(min = 10, max = 500, message = "Content must be between 10 and 500 characters")
     private String content;
 
+    @Schema(
+            name = "comments",
+            description = "Post Comments",
+            example = "Post Comments"
+    )
     private Set<CommentDto> comments = new HashSet<>();
 
+    @Schema(
+            name = "categoryId",
+            description = "Post Category Id",
+            example = "1"
+    )
     private Long categoryId;
 
     public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments, Long categoryId) {
